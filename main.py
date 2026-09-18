@@ -158,6 +158,9 @@ elif check == 2:
     
 elif check == 3:
     updateFile()
+
+elif check == 4:
+    deleteFile()
     
 else:
     print("INVALID INPUT")
