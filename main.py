@@ -60,7 +60,7 @@ def readFile():
 def renameFile(p):
     nName = input("Enter new name:- ")
     newP = Path('Files-Folders')/nName
-    if not newP.exists():
+    if not newP.exists() and newP.is_file:
         p.rename(newP)
         
         print("RENAME SUCCESSFULLY")
