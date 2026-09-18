@@ -574,6 +574,36 @@ The repository tracks the following improvements through GitHub Issues:
 
 ---
 
+# 📊 GitHub Issue Roadmap
+
+The repository uses GitHub Issues to track development work without modifying the current program workflow.
+
+### Completed
+
+| Issue | Feature |
+|---:|---|
+| #4 | Continuous CLI menu loop |
+| #5 | Confirmation for destructive file operations |
+
+### Planned / Open
+
+| Issue | Planned Improvement |
+|---:|---|
+| #1 | Review and correct Path.exists() checks |
+| #2 | Improve exception error messages |
+| #3 | Robust menu input validation |
+| #6 | File-name and path validation |
+| #7 | Copy and move operations |
+| #8 | File metadata viewer |
+| #9 | File search functionality |
+| #10 | Automated tests |
+| #11 | Refactor main.py into smaller modules |
+| #12 | CLI message and naming consistency |
+
+> **Workflow note:** The existing program workflow documented above is intentionally unchanged. These issues describe repository improvements and future development work; they do not alter the current workflow by themselves.
+
+---
+
 # 📝 Detailed Project Report
 
 ## 1. Introduction
