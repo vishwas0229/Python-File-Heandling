@@ -302,27 +302,25 @@ Delete File / Delete Folder
 The application follows a simple procedural CLI architecture:
 
 ```text
-                 USER
-                   │
-                   ▼
-              MAIN MENU
-                   │
-       ┌───────────┼───────────┐
-       ▼           ▼           ▼
-    CREATE        READ       UPDATE
-       │           │           │
-       │           │      ┌────┼────┐
-       │           │      ▼    ▼    ▼
-       │           │   RENAME OVERWRITE APPEND
-       │           │      │    │    │
-       └───────────┴──────┴────┴────┘
-                   │
-                   ▼
-             DELETE FILE/FOLDER
-                   │
-                   ▼
-              FILESYSTEM
-          Files-Folders/
+                               USER
+                                │
+                                ▼
+                         ┌─────────────┐
+                         │  MAIN MENU  │
+                         └──────┬──────┘
+                                │
+       ┌───────────────┬────────┴─────────┬───────────────────┐
+       ▼               ▼                  ▼                   ▼
+    CREATE            READ              UPDATE        DELETE FILE/FOLDER
+       │               │          ┌────────┼────────┐         |
+       │               │          ▼        ▼        ▼         |
+       │               │        RENAME OVERWRITE APPEND       |
+       │               │          │        │         │        |
+       └───────────────┴──────────|────────┴─────────┴────────┘
+                                  │
+                    ┌─────────────┴─────────────┐
+                    │  Files-Folders/FILESYSTEM │
+                    └───────────────────────────┘
 ```
 
 There is no database, GUI, web server, external API, authentication system, or third-party package.
