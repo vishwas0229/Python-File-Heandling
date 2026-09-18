@@ -1,6 +1,32 @@
 # 🐍 Python File Handling
 
+![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green)
+![Project Type](https://img.shields.io/badge/Project-CLI-orange)
+
+**A learning-focused command-line project for understanding Python file and folder handling.**
+
 > A simple, menu-driven Python command-line application for learning and practicing file and folder operations using Python's standard library.
+
+## 📑 Table of Contents
+
+- [Project Overview](#-project-overview)
+- [Objectives](#-objectives)
+- [Features](#-features)
+- [Technologies Used](#-technologies-used)
+- [Project Structure](#-project-structure)
+- [Main Menu](#-main-menu)
+- [Workflow](#-program-workflow)
+- [Functions](#-functions-in-mainpy)
+- [Concepts Demonstrated](#-file-handling-concepts-demonstrated)
+- [Requirements](#-functional-requirements)
+- [Testing](#-test-scenarios)
+- [How to Run](#️-how-to-run)
+- [Current Implementation](#️-current-implementation-notes)
+- [Planned Improvements](#-planned-improvements)
+- [Project Report](#-detailed-project-report)
+
+---
 
 ## 📌 Project Overview
 
@@ -523,9 +549,22 @@ The current implementation uses normal text-file I/O and does not provide specia
 
 ---
 
-# 🚀 Planned Improvements
+# 📌 Repository Roadmap
 
-The repository tracks future improvements through GitHub Issues, including:
+The repository uses GitHub Issues to track improvements separately from the current implementation. The roadmap intentionally distinguishes **what exists in `main.py`** from **what is planned**.
+
+### Current Implementation
+
+- ✅ Create and read text files
+- ✅ Rename files
+- ✅ Overwrite and append content
+- ✅ Delete files and folders
+- ✅ Recursive workspace listing
+- ✅ Continuous CLI menu
+
+### Planned Improvements
+
+The repository tracks the following improvements through GitHub Issues:
 
 - Correct all `Path.exists()` checks.
 - Improve exception reporting.
