@@ -1,40 +1,47 @@
 # 🐍 Python File Handling
 
-> A simple, menu-driven Python command-line program for learning and practicing file and folder operations with Python's standard library.
+> A beginner-friendly, menu-driven Python CLI application for learning and practicing file and folder management using the standard library.
 
 ## 📌 Project Overview
 
-**Python File Handling** is a beginner-friendly console application that demonstrates how Python can interact with the local filesystem.
+**Python File Handling** is a command-line application that demonstrates practical filesystem operations inside a dedicated `Files-Folders` workspace.
 
-The program uses a dedicated `Files-Folders` directory as its working area and provides a menu through which the user can:
+The current implementation supports:
 
-- List files and folders recursively
-- Create a new file
-- Read file contents
-- Update an existing file
-- Rename a file
-- Overwrite file contents
-- Append content to a file
-- Delete a file
-- Exit the program
+- 📂 Recursive file and folder listing
+- 📝 File creation with initial content
+- 📖 Text-file reading
+- ✏️ File update operations
+- 🔄 File renaming
+- 🧹 File overwrite with confirmation
+- ➕ File content append
+- 🗑️ File deletion
+- 📁 Folder deletion
+- 📋 File/folder metadata display
+- 🔎 File/folder name search
+- 📄 File copying
+- 🚚 File/folder moving
+- 🛡️ Basic path-traversal protection
+- 🔢 Continuous menu navigation
+- 🚪 Safe program exit
 
-The project is implemented in a single **`main.py`** file and uses Python's built-in **`pathlib`** and **`os`** modules. No third-party packages are required.
+The project is implemented in a single **`main.py`** file and uses Python's standard library. No third-party Python packages are required.
 
 ---
 
 # 🎯 Objectives
 
-The project is designed to provide practical understanding of:
+The project demonstrates:
 
-1. File and directory handling in Python.
-2. Creating and reading text files.
-3. Writing, overwriting, and appending file data.
-4. Renaming and deleting files.
-5. Building filesystem paths with `pathlib.Path`.
-6. Recursively discovering files and directories with `rglob()`.
-7. Using functions to organize a small Python program.
-8. Using `try-except` blocks for basic runtime error handling.
-9. Building a simple command-line interface using user input.
+1. Creating and managing filesystem paths with `pathlib.Path`.
+2. Reading, writing, overwriting, and appending text files.
+3. Renaming, copying, moving, and deleting filesystem items.
+4. Recursively listing and searching files and folders.
+5. Inspecting basic filesystem metadata.
+6. Validating command-line input.
+7. Protecting operations inside a defined workspace.
+8. Using `try-except` for filesystem errors.
+9. Building a reusable menu-driven CLI workflow.
 
 ---
 
@@ -42,83 +49,74 @@ The project is designed to provide practical understanding of:
 
 ## 📂 1. List Files and Folders
 
-The program scans the `Files-Folders` directory recursively and prints every discovered file and directory.
-
-It uses:
-
-```python
-Path('Files-Folders').rglob('*')
-```
-
-This lets the user inspect the available items before performing file operations.
+`readFileAndFolder()` recursively scans `Files-Folders/` using `rglob("*")` and displays each item with a **FILE** or **DIR** indicator.
 
 ## 📝 2. Create a File
 
-The **Create File** option displays the workspace, asks for a file name, checks whether the target already exists, creates the file, and writes user-provided text.
-
-Example:
-
-```text
-Enter new file name:- notes.txt
-What you want to write in that file:- Learning Python file handling.
-FILE CREATED SUCCESSFULLY
-```
+The program asks for a target name and initial content. Parent directories are created when required.
 
 ## 📖 3. Read a File
 
-The **Read File** option asks for a file name and attempts to display its complete contents using read mode:
-
-```python
-open(p, "r")
-```
+Existing files are read as UTF-8 text and displayed in the terminal.
 
 ## ✏️ 4. Update a File
 
-The **Update File** option provides three operations:
+The update menu provides:
 
-| Option | Operation | Purpose |
+| Option | Operation | Description |
 |---:|---|---|
-| `1` | Rename | Changes the file name |
-| `2` | Overwrite | Replaces existing file contents |
-| `3` | Append | Adds new content at the end |
+| 1 | Rename | Change the file name |
+| 2 | Overwrite | Replace all existing content |
+| 3 | Append | Add new content to the file |
 
-## 🔄 5. Rename a File
+## 🔄 5. Rename
 
-The rename operation requests a new name and uses `Path.rename()` to move the file to the new path. The current code also asks for confirmation when the destination path already exists.
+Renaming uses `Path.rename()`. If the destination already exists, the user is asked whether it should be overwritten.
 
-## 🧹 6. Overwrite File Content
+## 🧹 6. Overwrite
 
-The selected file is opened using write mode:
+The application asks for confirmation before replacing file content.
 
-```python
-open(p, "w")
-```
+## ➕ 7. Append
 
-Write mode replaces the previous content.
+New text is added using append mode without automatically inserting an extra space.
 
-> ⚠️ Use this operation carefully because the previous file content is replaced.
+## 🗑️ 8. Delete File or Folder
 
-## ➕ 7. Append Data
+The delete menu distinguishes between files and folders and requires confirmation before deletion.
 
-The selected file is opened in append mode:
+- Files are removed with `Path.unlink()`.
+- Folders are removed recursively with `shutil.rmtree()`.
 
-```python
-open(p, "a")
-```
+## 📋 9. File/Folder Metadata
 
-The new text is added after the existing content. The current implementation inserts one leading space before the appended text.
+`showMetadata()` displays:
 
-## 🗑️ 8. Delete a File
+- Path
+- Type
+- Size in bytes
+- Last modified timestamp
+- Permission bits
 
-The main menu includes option `4` for deletion. `deleteFile()` validates that the target is a file and removes it with:
+## 🔎 10. Search
 
-```python
-os.remove(p)
-```
+`searchFiles()` searches recursively by matching the supplied text against file and folder names.
 
-## 🚪 9. Exit
+## 📄 11. Copy
 
-Selecting `0` calls `breakPrg()`, which simply returns.
+`copyFile()` copies a file with metadata using `shutil.copy2()`.
+
+## 🚚 12. Move
+
+`moveFile()` moves a file or folder with `shutil.move()`.
+
+## 🛡️ 13. Workspace Path Protection
+
+`get_target()` resolves the requested path and rejects paths that escape the `Files-Folders` workspace. This helps prevent accidental operations outside the project workspace.
+
+## 🔢 14. Input Validation and Continuous Menu
+
+`get_menu_choice()` validates numeric menu selections, while `main()` keeps the application running until the user selects **0 - Exit**.
 
 ---
 
@@ -127,10 +125,11 @@ Selecting `0` calls `breakPrg()`, which simply returns.
 | Technology / Module | Usage |
 |---|---|
 | **Python 3** | Core programming language |
-| **pathlib** | Path construction, recursive traversal, file checks, and renaming |
-| **os** | File removal |
+| **pathlib** | Paths, traversal, file checks, metadata, renaming |
+| **os** | Imported for filesystem compatibility/utilities |
+| **shutil** | Copying, moving, and recursive folder deletion |
 | **File I/O** | Reading, writing, overwriting, and appending |
-| **Git / GitHub** | Source-code management and project hosting |
+| **Git / GitHub** | Version control and project hosting |
 
 ### Dependencies
 
@@ -153,37 +152,32 @@ Python-File-Heandling/
 └── LICENSE
 ```
 
-### Repository Components
-
-| Component | Description |
-|---|---|
-| `Files-Folders/` | Working directory used by the program |
-| `main.py` | Complete application logic |
-| `README.md` | Project documentation |
-| `LICENSE` | MIT License |
-
 ---
 
 # 🧭 Main Menu
 
-The current `main.py` displays:
+The current application provides:
 
 ```text
-Press 1 for creating a file
-Press 2 for reading a file
-Press 3 for updating a file
-Press 4 for deletion a file
-Press 0 for exit
-Please tell your response :-
+========== PYTHON FILE HANDLING ==========
+1. Create a file
+2. Read a file
+3. Update a file
+4. Delete a file/folder
+5. List files and folders
+6. Copy a file
+7. Move a file/folder
+8. Search files and folders
+9. Show file/folder metadata
+0. Exit
 ```
 
-The update submenu is:
+### Update Menu
 
 ```text
 Press 1 for rename
 Press 2 for overwriting data
 Press 3 for append data
-Enter your responce:-
 ```
 
 ---
@@ -191,35 +185,30 @@ Enter your responce:-
 # 🔄 Program Workflow
 
 ```text
-                    ┌─────────────────────┐
-                    │     Start Program   │
-                    └──────────┬──────────┘
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │    Display Menu     │
-                    └──────────┬──────────┘
-                               │
-          ┌────────────────────┼─────────────────────┐
-          │                    │                     │
-          ▼                    ▼                     ▼
-      Create File           Read File            Update File
-          │                    │                     │
-          │                    │          ┌──────────┼──────────┐
-          │                    │          │          │          │
-          │                    │          ▼          ▼          ▼
-          │                    │       Rename    Overwrite    Append
-          │                    │          │          │          │
-          └────────────────────┴──────────┴──────────┴──────────┐
-                                                                 │
-                                                                 ▼
-                                                            Delete File
-                                                                 │
-                                                                 ▼
-                                                            Program End
+                         START
+                           │
+                           ▼
+                    ┌─────────────┐
+                    │  Main Menu  │
+                    └──────┬──────┘
+                           │
+       ┌──────────┬────────┼────────┬───────────┐
+       ▼          ▼        ▼        ▼           ▼
+     Create      Read    Update    Delete      Other
+       │          │        │        │           │
+       │          │     ┌──┼──┐     │      ┌────┼────┬────┐
+       │          │     │  │  │     │      │    │    │    │
+       │          │   Rename │ Append │    List Copy Move Search Metadata
+       │          │      Overwrite   │
+       └──────────┴────────┴────────┴───────────┘
+                           │
+                           ▼
+                     Return to Menu
+                           │
+                     ┌─────┴─────┐
+                     │  Exit (0) │
+                     └───────────┘
 ```
-
-The top-level menu is currently displayed once per execution. There is no continuous `while` loop around the menu.
 
 ---
 
@@ -227,15 +216,23 @@ The top-level menu is currently displayed once per execution. There is no contin
 
 | Function | Responsibility |
 |---|---|
-| `breakPrg()` | Provides the exit branch |
-| `readFileAndFolder()` | Recursively lists workspace items |
+| `print_separator()` | Prints a visual separator |
+| `ensure_workspace()` | Creates the workspace when needed |
+| `get_target(name)` | Validates and resolves workspace paths |
+| `readFileAndFolder()` | Recursively lists files and directories |
 | `createFile()` | Creates a file and writes initial content |
-| `readFile()` | Reads and prints file content |
-| `renameFile(p)` | Renames a selected file |
-| `overwriteFile(p)` | Replaces file content |
-| `appendFile(p)` | Adds content to an existing file |
+| `readFile()` | Reads a UTF-8 text file |
+| `renameFile(path)` | Renames a file |
+| `overwriteFile(path)` | Replaces file contents |
+| `appendFile(path)` | Appends new content |
 | `updateFile()` | Selects rename, overwrite, or append |
-| `deleteFile()` | Removes a selected file |
+| `deleteFile()` | Deletes a file or folder |
+| `copyFile()` | Copies a file |
+| `moveFile()` | Moves a file or folder |
+| `searchFiles()` | Searches file/folder names |
+| `showMetadata()` | Displays filesystem metadata |
+| `get_menu_choice()` | Validates numeric menu input |
+| `main()` | Runs the continuous CLI menu |
 
 ---
 
@@ -243,120 +240,124 @@ The top-level menu is currently displayed once per execution. There is no contin
 
 ## File Modes
 
-| Mode | Meaning | Use in Project |
+| Mode | Meaning | Project Usage |
 |---|---|---|
 | `r` | Read | Read file contents |
-| `w` | Write / overwrite | Create or replace content |
-| `a` | Append | Add content to an existing file |
+| `w` | Write/overwrite | Create or replace text |
+| `a` | Append | Add text to an existing file |
 
-## `pathlib.Path`
-
-Paths are constructed with expressions such as:
-
-```python
-p = Path('Files-Folders') / name
-```
+The implementation also uses `Path.read_text()`, `Path.write_text()`, and `Path.open()` with UTF-8 encoding.
 
 ## Recursive Traversal
 
-`rglob('*')` recursively discovers files and directories below `Files-Folders`.
+`Path.rglob("*")` discovers files and folders below the workspace.
 
-## Functions and Control Flow
+## Path Management
 
-The program uses functions, `if` / `elif` / `else`, user input, loops inside library operations, and exception handling to organize its behavior.
+`Path` objects are used instead of manually concatenating filesystem strings.
 
-## Exception Handling
+## File Operations
 
-Several file operations use:
+The project demonstrates:
 
-```python
-try:
-    ...
-except Exception as err:
-    ...
+```text
+Create → Read → Update → Rename
+                   │
+                   ├── Overwrite
+                   └── Append
+
+Copy / Move / Delete / Search / Metadata
 ```
 
 ---
 
 # 🏗️ Technical Architecture
 
-The application follows a small procedural CLI architecture:
+The project follows a small procedural CLI architecture:
 
 ```text
                  USER
                    │
                    ▼
-             CLI MAIN MENU
+              main() / CLI
                    │
-       ┌───────────┼───────────┐
-       │           │           │
-       ▼           ▼           ▼
-    CREATE       READ       UPDATE
-       │           │           │
-       │           │       ┌───┼─────────┐
-       │           │       │   │         │
-       │           │       ▼   ▼         ▼
-       │           │    RENAME OVERWRITE APPEND
-       │           │       │    │         │
-       └───────────┴───────┴────┴─────────┘
-                               │
-                               ▼
-                            DELETE
-                               │
-                               ▼
-                         FILESYSTEM
-                     (Files-Folders/)
+          ┌────────┼─────────┐
+          ▼        ▼         ▼
+      Validation  Operation  Workspace
+          │        │         │
+          │   ┌────┼────┐     │
+          │   ▼    ▼    ▼     ▼
+          │ Create Read Update Files-Folders/
+          │             │
+          │        ┌────┼────┐
+          │      Rename Overwrite Append
+          │
+          └── Copy / Move / Delete / Search / Metadata
 ```
 
-The project has no database, web server, GUI, external API, or third-party Python dependency.
+There is no database, web server, GUI, authentication system, external API, or third-party Python dependency.
 
 ---
 
 # 📋 Functional Requirements
 
-1. Display files and directories in the working folder.
-2. Create a new file.
-3. Write initial text to a file.
-4. Read an existing file.
-5. Rename a file.
-6. Overwrite file content.
-7. Append additional content.
-8. Delete an existing file.
-9. Exit through the command-line menu.
-10. Display operation status or error messages.
+1. The system shall maintain a dedicated filesystem workspace.
+2. The system shall list files and directories recursively.
+3. The system shall create new text files.
+4. The system shall read existing text files.
+5. The system shall rename files.
+6. The system shall overwrite file content after confirmation.
+7. The system shall append file content.
+8. The system shall delete files and folders after confirmation.
+9. The system shall copy files.
+10. The system shall move files and folders.
+11. The system shall search file and folder names.
+12. The system shall display basic file/folder metadata.
+13. The system shall validate menu input.
+14. The system shall reject paths outside the workspace.
+15. The system shall continue running until the user selects Exit.
 
 ---
 
 # ⚙️ Non-Functional Requirements
 
 ### Usability
-The application exposes straightforward numeric choices through the terminal.
+The application uses simple numbered choices and confirmation prompts.
 
 ### Portability
-The implementation relies on Python's standard library.
+It uses Python's standard library and does not require third-party packages.
 
 ### Maintainability
-File operations are separated into functions with specific responsibilities.
+Operations are separated into dedicated functions.
+
+### Safety
+Overwrite and delete actions require confirmation, and target paths are constrained to the workspace.
 
 ### Simplicity
-The code remains compact so the underlying filesystem concepts are easy to study.
+The project remains a single-file educational CLI so the filesystem concepts are easy to study.
 
 ---
 
-# 🧪 Test Cases
+# 🧪 Test Scenarios
 
 | # | Scenario | Expected Result |
 |---:|---|---|
-| 1 | Select `1` and enter a new file name | File is created and content is written |
-| 2 | Create using an existing path | Existing-file message is shown |
-| 3 | Select `2` and enter an existing file | File content is displayed |
-| 4 | Select `3 → 1` | File is renamed |
-| 5 | Select `3 → 2` | Existing content is replaced |
-| 6 | Select `3 → 3` | New content is appended |
-| 7 | Select `4` and enter an existing file | File is removed |
-| 8 | Select `0` | Program exits |
-| 9 | Enter unsupported numeric menu input | `INVALID INPUT` is displayed |
-| 10 | Enter non-numeric input where `int()` is expected | `ValueError` can occur |
+| 1 | Create a new file | File is created with supplied content |
+| 2 | Create an existing file | Existing-path message is shown |
+| 3 | Read an existing text file | Content is displayed |
+| 4 | Rename a file | File receives the new name |
+| 5 | Overwrite a file and confirm | Existing content is replaced |
+| 6 | Overwrite and decline | Content remains unchanged |
+| 7 | Append content | New content is added |
+| 8 | Delete a file and confirm | File is removed |
+| 9 | Delete a folder and confirm | Folder and its contents are removed |
+| 10 | Copy a file | Destination file is created |
+| 11 | Move a file/folder | Source is moved to destination |
+| 12 | Search by name | Matching paths are displayed |
+| 13 | Show metadata | Path, type, size, timestamp, permissions are displayed |
+| 14 | Enter invalid menu input | User is asked for a valid number |
+| 15 | Enter `../outside` path | Path validation rejects the operation |
+| 16 | Select `0` | Program exits cleanly |
 
 ---
 
@@ -406,127 +407,100 @@ python3 main.py
 
 # 💡 Example Usage
 
-## Create a File
+### Create
 
 ```text
-Press 1 for creating a file
-Please tell your response :- 1
-
-Enter new file name:- demo.txt
-What you want to write in that file:- Hello Python
+1. Create a file
+Enter new file name:- notes.txt
+What you want to write in that file:- Learning Python
 FILE CREATED SUCCESSFULLY
 ```
 
-## Read a File
+### Read
 
 ```text
-Press 2 for reading a file
-Please tell your response :- 2
-
-Enter file name you want to read:- demo.txt
-Hello Python
+2. Read a file
+Enter file name you want to read:- notes.txt
+Learning Python
 READ SUCCESSFULLY
 ```
 
-## Update → Append
+### Update → Append
 
 ```text
-Press 3 for updating a file
-Please tell your response :- 3
-
-Enter file name you want to update:- demo.txt
+3. Update a file
+Enter file name you want to update:- notes.txt
 Press 1 for rename
 Press 2 for overwriting data
 Press 3 for append data
-Enter your responce:- 3
-
-Tell what you want to append:- Again!
+Enter your response:- 3
+Tell what you want to append:- is useful.
 APPEND SUCCESSFULLY
 ```
 
-## Delete
+### Copy / Move
 
 ```text
-Press 4 for deletion a file
-Please tell your response :- 4
+6. Copy a file
+7. Move a file/folder
+```
 
-Enter which file you want to delete:- demo.txt
-REMOVE SUCCESSFULLY
+### Search / Metadata
+
+```text
+8. Search files and folders
+9. Show file/folder metadata
 ```
 
 ---
 
 # 🔐 Safety and Data Considerations
 
-This program performs real filesystem changes.
+This application performs real filesystem changes.
 
-- **Overwrite** replaces existing file contents.
-- **Delete** removes the selected file.
-- Operations are intended for the `Files-Folders` workspace.
-- The program does not provide backup, undo, or version history.
+- Overwrite permanently replaces current text content.
+- Delete permanently removes the selected file or folder.
+- Folder deletion is recursive.
+- Copy and move operations change filesystem state.
+- The application restricts targets to the `Files-Folders` workspace.
+- There is no backup, undo, or version history.
 
-Use disposable test files when experimenting with overwrite and delete operations.
+Use disposable test data while learning.
 
 ---
 
-# ⚠️ Current Implementation Notes
+# 📝 Current Implementation Status
 
-The following points are documented from the current `main.py` implementation:
+The current `main.py` already includes the major improvements that were previously tracked as planned issues:
 
-### 1. The menu is single-run
-The program performs one selected top-level operation and then reaches the end of the script. A continuous menu loop is not currently implemented.
+- ✅ Correct `Path.exists()` usage
+- ✅ Better exception messages
+- ✅ Numeric menu validation
+- ✅ Continuous menu loop
+- ✅ Confirmation for overwrite/delete
+- ✅ Workspace path validation
+- ✅ Copy operation
+- ✅ Move operation
+- ✅ Search functionality
+- ✅ Metadata viewer
+- ✅ Improved CLI messages and naming
 
-### 2. Input validation is basic
-Top-level and update-menu selections are converted with `int(input(...))`. Non-numeric input can raise `ValueError`.
-
-### 3. Some `exists` checks need correction
-Several conditions use the method reference rather than calling the method, for example:
-
-```python
-if p.exists and p.is_file():
-```
-
-and:
-
-```python
-if not newP.exists:
-```
-
-These would normally be written using `exists()`.
-
-### 4. Some exception messages do not interpolate `err`
-The current code contains strings such as:
-
-```python
-print("An error occured as {err}")
-```
-
-Because the string is not an f-string, `{err}` is printed literally instead of displaying the exception value.
-
-### 5. Naming and spelling can be improved
-Examples include `breakPrg`, `dosen't`, `responce`, and `overwritr`. These do not prevent the core demonstration but can be cleaned up.
-
-### 6. Scope is primarily text-file handling
-The code demonstrates normal text read/write behavior and does not implement special processing for binary files such as images, PDFs, or videos.
+Remaining project-level improvements can focus on automated tests and further modularization.
 
 ---
 
 # 🚀 Future Improvements
 
-- Add a `while` loop for repeated operations in one execution.
-- Improve numeric and filename validation.
-- Catch specific filesystem exceptions instead of only broad exceptions.
-- Correct `exists` method calls.
-- Improve console wording and spelling.
-- Add confirmation before overwrite and delete.
-- Add copy and move functionality.
-- Add directory creation and management.
-- Add file search and metadata display.
-- Add file extension filtering.
-- Add unit tests for each operation.
+- Add automated unit/integration tests.
+- Refactor the single `main.py` file into modules.
 - Add structured logging.
-- Add stricter path validation.
+- Add richer file-content search.
+- Add file extension/type filters.
+- Add directory creation and dedicated directory management.
+- Add timestamps in a more readable format.
 - Add a GUI using Tkinter.
+- Add optional configuration for the workspace path.
+- Add backup/restore or undo functionality.
 
 ---
 
@@ -534,34 +508,43 @@ The code demonstrates normal text read/write behavior and does not implement spe
 
 ## 1. Introduction
 
-File handling is a fundamental programming concept because applications frequently need to store, retrieve, modify, and remove information from the filesystem.
+File handling is a fundamental programming concept because software frequently needs to create, retrieve, modify, move, copy, and remove data stored on a filesystem.
 
-Python provides built-in facilities for filesystem operations. This project applies those concepts in a small command-line application so that learners can understand them through direct interaction.
+This project turns those individual Python concepts into one interactive CLI application.
 
 ## 2. Problem Statement
 
-Beginners often learn file functions individually but may not understand how creation, reading, updating, and deletion fit into a complete workflow.
+Beginners may understand individual file functions but have difficulty connecting them into a complete filesystem workflow.
 
-This project addresses that learning gap by combining common file operations into a single menu-driven program.
+This project provides a practical learning environment where common file and folder operations can be performed through a single command-line interface.
 
 ## 3. Proposed Solution
 
-The proposed solution is a Python CLI utility centered around the `Files-Folders` workspace. The user chooses an operation, the relevant function constructs the target path, performs the requested action, and reports the result.
+The application uses `Files-Folders/` as a controlled workspace. User input is validated, converted into a safe `Path`, and passed to the appropriate operation.
+
+The application continues to display its menu until the user chooses Exit.
 
 ## 4. Scope
 
 ### In Scope
-- File and directory listing
+
+- File/folder listing
 - File creation
 - File reading
 - File renaming
 - File overwrite
 - File append
-- File deletion
+- File/folder deletion
+- File copying
+- File/folder moving
+- Name-based search
+- Metadata display
+- Input validation
+- Workspace path validation
 - Basic exception handling
-- Command-line interaction
 
 ### Out of Scope
+
 - Database management
 - Cloud storage
 - Remote filesystem access
@@ -570,25 +553,28 @@ The proposed solution is a Python CLI utility centered around the `Files-Folders
 - File versioning
 - Encryption
 - GUI
-- Advanced file-type processing
+- Advanced binary-file processing
 
 ## 5. Inputs
 
 - Main menu choice
-- File name
+- File/folder name
 - Initial file content
 - Replacement content
 - Appended content
 - New name during rename
-- Rename confirmation when needed
+- Source/destination paths
+- Confirmation responses
+- Search query
 
 ## 6. Outputs
 
-- Recursive workspace listing
+- Workspace listing
 - File contents
-- Success messages
-- Invalid-input messages
-- Error messages
+- Operation status messages
+- Search results
+- File/folder metadata
+- Validation and error messages
 
 ## 7. Data Flow
 
@@ -598,71 +584,46 @@ User
   ▼
 Main Menu
   │
-  ▼
-Select Operation
-  │
-  ├── Create ───────► Build Path ─► Write File
-  │
-  ├── Read ─────────► Build Path ─► Read File
-  │
-  ├── Update ───────► Choose Rename / Overwrite / Append
-  │
-  └── Delete ───────► Build Path ─► Remove File
+  ├── Create ───► Validate Path ───► Write
+  ├── Read ─────► Validate Path ───► Read
+  ├── Update ───► Validate Path ───► Rename / Overwrite / Append
+  ├── Delete ───► Validate Path ───► Confirm ───► Remove
+  ├── Copy ─────► Validate Paths ──► Copy
+  ├── Move ─────► Validate Paths ──► Move
+  ├── Search ───► Recursive Scan ──► Results
+  └── Metadata ─► Validate Path ───► stat()
   │
   ▼
-Console Result
+Return to Menu
+  │
+  ▼
+Exit
 ```
 
-## 8. Module-Level Design
+## 8. Error Handling
 
-Although all application logic is inside one source file, its responsibilities can be viewed as:
+The application catches common filesystem and validation failures and reports the actual exception message.
 
-```text
-main.py
-│
-├── Program Control
-│   └── breakPrg()
-│
-├── Workspace Inspection
-│   └── readFileAndFolder()
-│
-├── Creation
-│   └── createFile()
-│
-├── Reading
-│   └── readFile()
-│
-├── Updating
-│   ├── updateFile()
-│   ├── renameFile()
-│   ├── overwriteFile()
-│   └── appendFile()
-│
-└── Deletion
-    └── deleteFile()
-```
+Examples include invalid paths, missing files, permission problems, and invalid menu input.
 
-## 9. Error Handling
+## 9. Benefits
 
-Several functions use `try-except` to capture runtime failures. A future version can provide more precise handling for exceptions such as `FileNotFoundError`, `PermissionError`, `IsADirectoryError`, `NotADirectoryError`, and `ValueError`.
+- Beginner-friendly.
+- Practical demonstration of Python filesystem APIs.
+- Uses only the standard library.
+- Covers both file and folder operations.
+- Includes basic safety protections.
+- Provides a foundation for future testing and modularization.
 
-## 10. Benefits
+## 10. Limitations
 
-- Simple for beginners to understand.
-- Demonstrates multiple file operations in one project.
-- Uses only Python's standard library.
-- Gives practical experience with filesystem paths.
-- Provides a foundation for a larger file-management application.
+The current version remains an educational CLI application. It does not provide production-grade backup, authentication, audit logging, concurrent access control, undo/versioning, or advanced file-content indexing.
 
-## 11. Limitations
+## 11. Conclusion
 
-The current version is primarily educational. It does not provide authentication, backups, undo, logging, advanced input validation, persistent application state, or production-grade filesystem protections.
+**Python File Handling** demonstrates how Python's filesystem APIs can be combined into a practical command-line workflow.
 
-## 12. Conclusion
-
-The **Python File Handling** project provides a practical introduction to local filesystem programming in Python. By combining listing, creation, reading, updating, renaming, overwriting, appending, and deletion into one CLI application, it demonstrates how core Python file APIs can be integrated into a useful workflow.
-
-The project also provides a clear foundation for future enhancements such as continuous navigation, safer input handling, automated testing, metadata support, and a graphical interface.
+The current implementation has evolved beyond basic CRUD-style file handling and now includes continuous navigation, safer path handling, copy/move operations, search, metadata inspection, and confirmation prompts.
 
 ---
 
