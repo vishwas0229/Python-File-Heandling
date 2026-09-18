@@ -1,10 +1,6 @@
 from pathlib import Path
+import shutil as sh
 import os
-
-
-# Break programe
-def breakPrg():
-    return
 
 
 # Print files and dir present in the main dir
@@ -13,6 +9,8 @@ def readFileAndFolder():
     items = list(path.rglob('*'))
     for i, item in enumerate(items):
         print(f"{i + 1} : {item}")
+        
+    print("-------------------------------------------")
 
     
 # Create new file
@@ -27,9 +25,11 @@ def createFile():
                 fs.write(data)
                 
             print("FILE CREATED SUCCESSFULLY")
+            print("-------------------------------------------")
             
         else:
             print("This file already exist.")
+            print("-------------------------------------------")
             
     except Exception as err:
         print(f"An error occured as {err}")
@@ -40,15 +40,17 @@ def readFile():
     try:
         name = input("Enter file name you want to read:- ")
         p = Path('Files-Folders')/name
-        if p.exists and p.is_file():
+        if p.exists() and p.is_file():
             with open(p, "r") as fs:
                 data = fs.read()
                 print(data)
                 
             print("READ SUCCESSFULLY")
+            print("-------------------------------------------")
             
         else:
             print("File dosen't exists.")
+            print("-------------------------------------------")
             
     except Exception  as err:
         print (f"An error occured as {err}")
@@ -58,18 +60,23 @@ def readFile():
 def renameFile(p):
     nName = input("Enter new name:- ")
     newP = Path('Files-Folders')/nName
-    if not newP.exists:
+    if not newP.exists():
         p.rename(newP)
+        
         print("RENAME SUCCESSFULLY")
+        print("-------------------------------------------")
         
     else:
         resp = input("Are you soure overwrite the file (y)")
         if resp.lower() == 'y':
             p.rename(newP)
+            
             print("RENAME SUCCESSFULLY")
+            print("-------------------------------------------")
             
         else:
-            print("RENAME FAILED")
+            print("-------------------------------------------")
+            return
             
         
 # Overwrite the file
@@ -79,6 +86,7 @@ def overwriteFile(p):
         fs.write(data)
     
     print("OVERWRITE SUCCESSFULLY")
+    print("-------------------------------------------")
         
         
 # Append the file
@@ -88,6 +96,7 @@ def appendFile(p):
         fs.write(" " + data)
         
     print("APPEND SUCCESSFULLY")
+    print("-------------------------------------------")
         
         
 # Update file name / overwritr file / append file
@@ -114,9 +123,11 @@ def updateFile():
                 
             else:
                 print("INVALID INPUT")
+                print("-------------------------------------------")
         
         else:
-                    print("File dosen't exists.")
+            print("File dosen't exists.")
+            print("-------------------------------------------")
             
     except Exception as err:
         print("An error occured as {err}")
@@ -126,41 +137,70 @@ def updateFile():
 def deleteFile():
     readFileAndFolder()
     try:
-        name = input("Enter which file you want to delete:- ")
+        print("Press 1 for remove file")
+        print("Press 2 for remove folder")
+                
+        dres = int(input("What you want to delete:- "))
+        name = input("Enter which file/folder you want to delete:- ")
+        cmf = input("You want to delete this file (y):- ")
+        
         p = Path('Files-Folders')/name
-        if p.exists() and p.is_file():
-            os.remove(p)
-            print("REMOVE SUCCESSFULLY")
+        if dres == 1:
+            if p.exists() and p.is_file:
+                if cmf.lower() == 'y':
+                    os.remove(p)
+                    
+                    print("REMOVE SUCCESSFULLY")
+                    print("-------------------------------------------")
+                    
+                else:
+                    print("-------------------------------------------")
+                    return
 
-        else:
-            print("No such file exists.")
+            else:
+                print("No such file exists.")
+                print("-------------------------------------------")
+                
+        elif dres == 2:
+            if cmf.lower() == 'y':
+                sh.rmtree(p)
+                
+                print("REMOVE SUCCESSFULLY")
+                print("-------------------------------------------")
+            else:
+                print("-------------------------------------------")
+                return
+            
         
     except Exception as err:
-        print("An error occured as {err}")
+        print(f"An error occured as {err}")
         
 
-print("Press 1 for creating a file")
-print("Press 2 for reading a file")
-print("Press 3 for updating a file")
-print("Press 4 for deletion a file")
-print("Press 0 for exit")
+while 1:
+    print("Press 1 for creating a file")
+    print("Press 2 for reading a file")
+    print("Press 3 for updating a file")
+    print("Press 4 for deletion a file")
+    print("Press 0 for exit")
 
-check = int(input("Please tell your response :- "))
+    check = int(input("Please tell your response :- "))
+    print("-------------------------------------------")
 
-if check == 0:
-    breakPrg()
-    
-elif check == 1:
-    createFile()
-    
-elif check == 2:
-    readFile()
-    
-elif check == 3:
-    updateFile()
+    if check == 0:
+        break
+        
+    elif check == 1:
+        createFile()
+        
+    elif check == 2:
+        readFile()
+        
+    elif check == 3:
+        updateFile()
 
-elif check == 4:
-    deleteFile()
-    
-else:
-    print("INVALID INPUT")
+    elif check == 4:
+        deleteFile()
+        
+    else:
+        print("INVALID INPUT")
+        print("-------------------------------------------")
