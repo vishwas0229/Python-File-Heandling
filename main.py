@@ -83,11 +83,17 @@ def renameFile(p):
 def overwriteFile(p):
     with open(p, "w") as fs:
         data = input("Tell what you want to write this is overwrite the data:- ")
-        fs.write(data)
-    
-    print("OVERWRITE SUCCESSFULLY")
-    print("-------------------------------------------")
+        ores = input("Are you want to overwrite (y):- ")
+        if ores == 'y':
+            fs.write(data)
         
+            print("OVERWRITE SUCCESSFULLY")
+            print("-------------------------------------------")
+            
+        else:
+            print("-------------------------------------------")
+            return
+            
         
 # Append the file
 def appendFile(p):
@@ -177,30 +183,34 @@ def deleteFile():
         
 
 while 1:
-    print("Press 1 for creating a file")
-    print("Press 2 for reading a file")
-    print("Press 3 for updating a file")
-    print("Press 4 for deletion a file")
-    print("Press 0 for exit")
+    try:
+        print("Press 1 for creating a file")
+        print("Press 2 for reading a file")
+        print("Press 3 for updating a file")
+        print("Press 4 for deletion a file")
+        print("Press 0 for exit")
 
-    check = int(input("Please tell your response :- "))
-    print("-------------------------------------------")
-
-    if check == 0:
-        break
-        
-    elif check == 1:
-        createFile()
-        
-    elif check == 2:
-        readFile()
-        
-    elif check == 3:
-        updateFile()
-
-    elif check == 4:
-        deleteFile()
-        
-    else:
-        print("INVALID INPUT")
+        check = int(input("Please tell your response :- "))
         print("-------------------------------------------")
+
+        if check == 0:
+            break
+            
+        elif check == 1:
+            createFile()
+            
+        elif check == 2:
+            readFile()
+            
+        elif check == 3:
+            updateFile()
+
+        elif check == 4:
+            deleteFile()
+            
+        else:
+            print("INVALID INPUT")
+            print("-------------------------------------------")
+            
+    except Exception as err:
+        print(f"An error occured as {err}")
