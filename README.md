@@ -221,8 +221,8 @@ Press 2 for remove folder
                          │  Main Menu  │
                          └──────┬──────┘
                                 │
-       ┌───────────────┬────────┴────────┬───────────────────┐
-       ▼               ▼                 ▼                   ▼
+       ┌───────────────┬────────┴─────────┬──────────────────┐
+       ▼               ▼                  ▼                  ▼
     Create            Read             Update              Delete
        │               │          ┌───────┼───────┐          |
        │               │          ▼       ▼       ▼          |
@@ -314,9 +314,9 @@ The application follows a simple procedural CLI architecture:
     CREATE            READ              UPDATE        DELETE FILE/FOLDER
        │               │          ┌────────┼────────┐         |
        │               │          ▼        ▼        ▼         |
-       │               │        RENAME OVERWRITE APPEND       |
-       │               │          │        │         │        |
-       └───────────────┴──────────|────────┴─────────┴────────┘
+       │               │        RENAME OVERWRITE  APPEND      |
+       │               │          │        │        │         |
+       └───────────────┴──────────┼────────┴────────┴─────────┘
                                   │
                     ┌─────────────┴─────────────┐
                     │  Files-Folders/FILESYSTEM │
