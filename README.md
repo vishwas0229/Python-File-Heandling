@@ -489,58 +489,31 @@ Use disposable test data while learning.
 
 # ⚠️ Current Implementation Notes
 
-The following points are based directly on the current `main.py`:
+The current implementation is split into two layers:
 
-### 1. Continuous menu is implemented
+- `main.py` contains the interactive CLI and input/confirmation handling.
+- `file_manager.py` contains filesystem operations, path validation, search, metadata, copy, and move logic.
+- `tests/test_file_manager.py` covers the core operations with temporary data.
 
-The application uses a `while 1` loop and returns to the menu after operations.
+### Safety
 
-### 2. Input validation is basic
+All user-supplied filesystem paths are resolved against `Files-Folders/`. Absolute paths and paths that escape the workspace are rejected.
 
-Menu values are converted with `int(input(...))). Non-numeric input can raise `ValueError`.
+### Input Handling
 
-### 3. Some path checks need correction
+Numeric menu input is validated in a retry loop, so non-numeric values no longer terminate the application.
 
-`readFile()` correctly uses:
+### Filesystem Checks
 
-```python
-p.exists()
-```
+Operations explicitly distinguish files from directories and raise clear errors for missing or mismatched paths.
 
-but `renameFile()` contains:
+### Error Reporting
 
-```python
-if not newP.exists():
-```
+Expected filesystem and validation errors are displayed using their actual exception messages.
 
-which should be reviewed against the intended destination-existence logic.
+### Testability
 
-### 4. Some exception messages need improvement
-
-Several handlers correctly use f-strings, while `updateFile()` contains:
-
-```python
-print("An error occured as {err}")
-```
-
-so the actual exception is not interpolated there.
-
-### 5. Path validation is not implemented
-
-User-supplied names are joined directly with `Files-Folders`. There is currently no explicit protection against path traversal.
-
-### 6. Naming and spelling can be cleaned up
-
-Examples include:
-
-- `dosen't`
-- `responce`
-- `breakPrg` is absent in the current code because the loop exits directly.
-- Several messages use inconsistent grammar.
-
-### 7. The project focuses on text files
-
-The current implementation uses normal text-file I/O and does not provide special binary-file processing.
+The core logic is importable without starting the CLI, making it suitable for automated testing.
 
 ---
 
